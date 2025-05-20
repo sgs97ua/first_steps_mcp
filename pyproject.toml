@@ -1,0 +1,23 @@
+[project]
+name = "first-mcp"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Santiago",email = "sgs97@alu.ua.es"}
+]
+readme = "notes.md"
+requires-python = ">=3.11,<4.0"
+dependencies = [
+    "pydantic (>=2.11.4,<3.0.0)",
+    "openapi-pydantic (>=0.5.1,<0.6.0)",
+    "fastmcp (>=2.3.4,<3.0.0)",
+    "asyncio (>=3.4.3,<4.0.0)",
+    "langchain-mcp-adapters (>=0.1.0,<0.2.0)",
+    "langgraph (>=0.4.5,<0.5.0)",
+    "langchain-ollama (>=0.3.3,<0.4.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
