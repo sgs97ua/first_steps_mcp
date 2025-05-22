@@ -1,9 +1,10 @@
 from mcp.server.fastmcp import FastMCP
+from mcp.types import Resource
 
 
 
-# GRPAHQL SCHEMA
-graqphql_schema = """
+# GRAPHQL SCHEMA
+graphql_schema = """
     type Comarca @node{
         cod:String!,
         nombre:String!,
@@ -644,12 +645,17 @@ mcp = FastMCP(
 )
 
 
-@mcp.resource(graqphql_schema)
+@mcp.resource(
+        uri="http://localhost:9999/sse/schema",
+        name="GEOIA API GraphQL Schema",
+        description="GraphQL schema for the GEOIA API",
+        mime_type="text/plain",
+)
 def get_graphql_schema() -> str:
     """
     Provides the full GraphQL schema as context for downstream tools.
     """
-    return graqphql_schema
+    return graphql_schema
 
 
 @mcp.tool()
