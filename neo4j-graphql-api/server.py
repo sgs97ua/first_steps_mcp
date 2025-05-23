@@ -1,7 +1,8 @@
 from mcp.server.fastmcp import FastMCP
 from mcp.types import Resource
+import requests
 
-
+url_api = "http://localhost:4000"
 
 # GRAPHQL SCHEMA
 graphql_schema = """
@@ -646,16 +647,47 @@ mcp = FastMCP(
 
 
 @mcp.resource(
-        uri="http://localhost:9999/sse/schema",
-        name="GEOIA API GraphQL Schema",
-        description="GraphQL schema for the GEOIA API",
-        mime_type="text/plain",
+    uri="http://localhost:9999/sse/entity_representation",
+    name="GEOIA Neo4j Entity Definitions",
+    description="Complete Neo4j entity type definitions with relationship mappings for the GEOIA GraphQL API",
+    mime_type="text/plain",
 )
-def get_graphql_schema() -> str:
+def get_graphql_neo4j_entity_representation() -> str:
+    """
+    Provides the complete Neo4j GraphQL schema definition with all entity types, 
+    their properties, relationships, and data model structure used by the GEOIA API.
+    This representation includes node definitions, relationship properties, and 
+    domain-specific entity type annotations.
+    """
+    return graphql_schema
+
+
+@mcp.resource(
+    uri="http://localhost:9999/sse/api_schema",
+    name="GEOIA API GraphQL Schema",
+    description="Comprehensive GraphQL schema introspection data for the GEOIA API, providing details on available queries, types, fields, and their relationships. This schema serves as the blueprint for constructing valid GraphQL queries and understanding the data model structure of the entire GEOIA ecosystem.",
+    mime_type="application/json",
+)
+def get_grapql_schema() -> str:
     """
     Provides the full GraphQL schema as context for downstream tools.
     """
-    return graphql_schema
+    response = requests.get(url_api,
+                headers={"Content-Type": "application/json"},
+                json={"query":"""{
+                        __schema {
+                        queryType {
+                        name
+                        fields {
+                            name
+                            description
+                        }
+                        }
+                        }
+                        }
+                        """})
+    
+    return response.json()
 
 
 @mcp.tool()

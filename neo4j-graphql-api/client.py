@@ -22,6 +22,17 @@ async def main():
             tools = await load_mcp_tools(session)
             resources = await load_mcp_resources(session)
 
+            neo4j_entity_representation = None
+            api_schema = None 
+            # GET GRAPQL NEO4J RESOURCES
+            for resource in resources:
+                if resource.name == "neo4j-graphql":
+                    neo4j_entity_representation = resource.data
+                
+                elif resource.name == "api_schema":
+                    api_schema = resource.data
+                    
+
 
 
             # Create and run the agent
